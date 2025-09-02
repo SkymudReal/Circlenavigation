@@ -1,0 +1,381 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Круговая навигация</title>
+  <style>
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+
+    body {
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      min-height: 100vh;
+      background-image: linear-gradient(to right, #ff0000, white);
+      font-family: 'Arial', sans-serif;
+      transition: background-color 0.4s ease;
+    }
+
+    .container {
+      position: relative;
+      width: 550px;
+      height: 550px;
+      border-radius: 50%;
+      overflow: visible;
+      z-index: 100;
+    }
+
+    .center-circle {
+      position: absolute;
+      top: 50%;
+      left: 50%;
+      transform: translate(-50%, -50%);
+      width: 120px;
+      height: 120px;
+      border-radius: 50%;
+      background-image: url('https://placehold.co/120x120/FF0000/ffffff?text=ICL&font=Raleway');
+      background-size: cover;
+      background-position: center;
+      z-index: 1000;
+      cursor: pointer;
+      transition: transform 0.3s ease;
+    }
+
+    .center-circle:hover {
+      transform: translate(-50%, -50%) scale(1.1);
+    }
+
+    .pizza {
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      overflow: visible;
+    }
+
+    .slice {
+      fill: rgba(255, 255, 255, 0.1);
+      stroke: rgba(255, 255, 255, 0.2);
+      stroke-width: 1;
+      cursor: pointer;
+      transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+      transform-origin: 250px 250px;
+    }
+
+    .slice:hover {
+      transform: scale(1.1);
+      fill: rgba(255, 255, 255, 0.3);
+    }
+
+    .slice-text {
+      fill: white;
+      font-size: 14px;
+      font-weight: bold;
+      text-anchor: middle;
+      dominant-baseline: middle;
+      pointer-events: none;
+      transition: all 0.3s ease;
+    }
+
+    .slice:hover ~ .slice-text,
+    .slice-text:hover {
+      fill: #fff !important;
+      font-size: 16px !important;
+    }
+
+    .slice.active {
+      transform: scale(2.5);
+      fill: rgba(255, 255, 255, 0.95);
+      stroke: #fff;
+      stroke-width: 2;
+      z-index: 1000;
+      filter: drop-shadow(0 0 20px rgba(255, 255, 255, 0.6));
+    }
+
+    .slice.active + .slice-text {
+      fill: #000 !important;
+      font-size: 18px !important;
+      font-weight: bold;
+    }
+
+    /* Оверлей */
+    .overlay {
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100vw;
+      height: 100vh;
+      background: rgba(0, 0, 0, 0.6);
+      z-index: 9999;
+      opacity: 0;
+      visibility: hidden;
+      transition: all 0.4s ease;
+    }
+
+    .overlay.active {
+      opacity: 1;
+      visibility: visible;
+    }
+
+    .close-btn {
+      position: fixed;
+      top: 20px;
+      right: 20px;
+      width: 40px;
+      height: 40px;
+      background: rgba(255, 255, 255, 0.9);
+      border-radius: 50%;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      font-size: 24px;
+      font-weight: bold;
+      cursor: pointer;
+      z-index: 10000;
+      opacity: 0;
+      visibility: hidden;
+      transition: all 0.3s ease;
+    }
+
+    .close-btn.visible {
+      opacity: 1;
+      visibility: visible;
+    }
+
+    /* Модалка */
+    .info-modal {
+      position: fixed;
+      top: 50%;
+      left: 50%;
+      transform: translate(-50%, -50%);
+      width: 400px;
+      max-height: 240px;
+      background: white;
+      border-radius: 12px;
+      padding: 20px;
+      box-shadow: 0 10px 30px rgba(0, 0, 0, 0.3);
+      z-index: 10001;
+      opacity: 0;
+      visibility: hidden;
+      transition: all 0.3s ease;
+      font-size: 14px;
+      line-height: 1.5;
+      overflow-y: auto;
+    }
+
+    .info-modal.visible {
+      opacity: 1;
+      visibility: visible;
+    }
+
+    .info-modal h3 {
+      margin-bottom: 8px;
+      color: #333;
+      font-size: 16px;
+    }
+
+    .info-modal p {
+      color: #555;
+      white-space: pre-line;
+      margin-bottom: 12px;
+    }
+
+    .go-btn {
+      display: block;
+      width: 100%;
+      padding: 10px;
+      background: #000;
+      color: white;
+      border: none;
+      border-radius: 6px;
+      font-size: 14px;
+      font-weight: bold;
+      cursor: pointer;
+      margin-top: 10px;
+    }
+
+    .go-btn:hover {
+      background: #333;
+    }
+
+    @keyframes fadeIn {
+      to {
+        opacity: 1;
+        transform: scale(1);
+      }
+    }
+
+    .container {
+      opacity: 0;
+      transform: scale(0.9);
+      animation: fadeIn 0.6s ease forwards;
+    }
+
+    .container.active .center-circle {
+      opacity: 0;
+      transform: translate(-50%, -50%) scale(0.8);
+    }
+  </style>
+</head>
+<body>
+
+  <div class="container">
+    <div class="center-circle"></div>
+
+    <svg class="pizza" viewBox="0 0 500 500" xmlns="http://www.w3.org/2000/svg">
+      <!-- GitHub -->
+      <a data-href="https://github.com" target="_blank" class="slice-link">
+        <g class="slice-group">
+          <path d="M250,250 L250,0 A250,250 0 0,1 426.8,73.2 Z" class="slice" 
+                data-info="Code & projects\nExplore open-source repositories and collaborate on code." />
+          <text x="335" y="85" class="slice-text">GitHub</text>
+        </g>
+      </a>
+
+      <!-- LinkedIn -->
+      <a data-href="https://linkedin.com" target="_blank" class="slice-link">
+        <g class="slice-group">
+          <path d="M250,250 L426.8,73.2 A250,250 0 0,1 500,250 Z" class="slice" 
+                data-info="Explore jobs and grow your network\n\nDiscover relevant posts and expert insights.\n\nFind the right job or internship.\n\nPost your job for millions to see.\n\nLearn the skills you need to succeed.\n\nWho is LinkedIn for?\nAnyone looking to navigate their professional life." />
+          <text x="415" y="165" class="slice-text">LinkedIn</text>
+        </g>
+      </a>
+
+      <!-- Twitter/X -->
+      <a data-href="https://twitter.com" target="_blank" class="slice-link">
+        <g class="slice-group">
+          <path d="M250,250 L500,250 A250,250 0 0,1 426.8,426.8 Z" class="slice" 
+                data-info="Something went wrong, but don’t fret — let’s give it another shot.\n\n⚠️ Some privacy related extensions may cause issues on x.com.\nPlease disable them and try again." />
+          <text x="415" y="335" class="slice-text">Twitter</text>
+        </g>
+      </a>
+
+      <!-- Instagram -->
+      <a data-href="https://instagram.com" target="_blank" class="slice-link">
+        <g class="slice-group">
+          <path d="M250,250 L426.8,426.8 A250,250 0 0,1 250,500 Z" class="slice" 
+                data-info="簡介\n新聞中心\n版權\n聯絡我們\n創作者\n刊登廣告\n開發人員\n條款\n私隱\n政策及安全\nYouTube 的運作方式\n測試新功能\n© 2025 Google LLC" />
+          <text x="335" y="415" class="slice-text">Instagram</text>
+        </g>
+      </a>
+
+      <!-- YouTube -->
+      <a data-href="https://youtube.com" target="_blank" class="slice-link">
+        <g class="slice-group">
+          <path d="M250,250 L250,500 A250,250 0 0,1 73.2,426.8 Z" class="slice" 
+                data-info="簡介\n新聞中心\n版權\n聯絡我們\n創作者\n刊登廣告\n開發人員\n條款\n私隱\n政策及安全\nYouTube 的運作方式\n測試新功能\n© 2025 Google LLC" />
+          <text x="165" y="415" class="slice-text">YouTube</text>
+        </g>
+      </a>
+
+      <!-- Dribbble -->
+      <a data-href="https://dribbble.com" target="_blank" class="slice-link">
+        <g class="slice-group">
+          <path d="M250,250 L73.2,426.8 A250,250 0 0,1 0,250 Z" class="slice" 
+                data-info="515.3k shots • 986.2k fans\n12318.8k likes • 6410.7k followers\n20875 teams • 63417.6k views\n843.3k followers • 685.7k likes\n\nDiscover creative work from designers worldwide." />
+          <text x="85" y="335" class="slice-text">Dribbble</text>
+        </g>
+      </a>
+
+      <!-- Behance -->
+      <a data-href="https://behance.net" target="_blank" class="slice-link">
+        <g class="slice-group">
+          <path d="M250,250 L0,250 A250,250 0 0,1 73.2,73.2 Z" class="slice" 
+                data-info="簡介\n新聞中心\n版權\n聯絡我們\n創作者\n刊登廣告\n開發人員\n條款\n私隱\n政策及安全\nYouTube 的運作方式\n測試新功能\n© 2025 Google LLC" />
+          <text x="85" y="165" class="slice-text">Behance</text>
+        </g>
+      </a>
+
+      <!-- Figma -->
+      <a data-href="https://figma.com" target="_blank" class="slice-link">
+        <g class="slice-group">
+          <path d="M250,250 L73.2,73.2 A250,250 0 0,1 250,0 Z" class="slice" 
+                data-info="Explore jobs and grow your network\nBy clicking Continue, you agree to LinkedIn’s User Agreement, Privacy Policy, and Cookie Policy.\n\nNew to LinkedIn? Join now\n\n## Explore top content\nDiscover posts and insights — curated by topic.\n\n## Find the right job or internship\n\n## Post your job for millions to see\n\n## Learn the skills you need to succeed\n\nWho is LinkedIn for? Anyone in their professional life." />
+          <text x="165" y="85" class="slice-text">Figma</text>
+        </g>
+      </a>
+    </svg>
+  </div>
+
+  <!-- Внешние элементы -->
+  <div class="overlay"></div>
+  <div class="close-btn">×</div>
+  <div class="info-modal">
+    <h3 id="modal-title">Название</h3>
+    <p id="modal-text">Описание</p>
+    <button id="modal-go" class="go-btn">Перейти на сайт</button>
+  </div>
+
+  <script>
+    document.addEventListener('DOMContentLoaded', function () {
+      const container = document.querySelector('.container');
+      const overlay = document.querySelector('.overlay');
+      const closeBtn = document.querySelector('.close-btn');
+      const infoModal = document.querySelector('.info-modal');
+      const modalTitle = document.getElementById('modal-title');
+      const modalText = document.getElementById('modal-text');
+      const modalGoBtn = document.getElementById('modal-go');
+      const slices = document.querySelectorAll('.slice');
+      let activeSlice = null;
+      let currentHref = '';
+
+      function activateSlice(slice) {
+        if (activeSlice) activeSlice.classList.remove('active');
+        slice.classList.add('active');
+        activeSlice = slice;
+
+        const linkEl = slice.closest('.slice-link');
+        currentHref = linkEl.getAttribute('data-href').trim();
+        const title = new URL(currentHref).hostname;
+
+        modalTitle.textContent = title;
+        modalText.textContent = slice.getAttribute('data-info');
+
+        infoModal.classList.add('visible');
+        overlay.classList.add('active');
+        container.classList.add('active');
+        closeBtn.classList.add('visible');
+        document.body.style.backgroundImage = 'linear-gradient(to right, black, #1a1a1a)';
+      }
+
+      function deactivateSlice() {
+        if (activeSlice) {
+          activeSlice.classList.remove('active');
+          activeSlice = null;
+        }
+        overlay.classList.remove('active');
+        container.classList.remove('active');
+        closeBtn.classList.remove('visible');
+        infoModal.classList.remove('visible');
+        document.body.style.backgroundImage = 'linear-gradient(to right, #ff0000, white)';
+      }
+
+      slices.forEach(slice => {
+        slice.addEventListener('click', function (e) {
+          e.preventDefault();
+          e.stopPropagation();
+          activateSlice(this);
+        });
+      });
+
+      // Кнопка "Перейти"
+      modalGoBtn.addEventListener('click', function () {
+        if (currentHref) {
+          window.open(currentHref, '_blank');
+        }
+      });
+
+      // Закрытие
+      overlay.addEventListener('click', e => e.target === overlay && deactivateSlice());
+      closeBtn.addEventListener('click', deactivateSlice);
+      document.addEventListener('keydown', e => e.key === 'Escape' && activeSlice && deactivateSlice());
+    });
+  </script>
+</body>
+</html>
