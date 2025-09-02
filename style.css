@@ -9,7 +9,7 @@ body {
   justify-content: center;
   align-items: center;
   min-height: 100vh;
-  background-image: linear-gradient(to right, #ff0000, white);
+  background-image: linear-gradient(45deg, #ff0000, white);
   font-family: 'Arial', sans-serif;
   transition: background-color 0.4s ease;
 }
@@ -213,4 +213,5 @@ body {
 .container.active .center-circle {
   opacity: 0;
   transform: translate(-50%, -50%) scale(0.8);
+
 }
