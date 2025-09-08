@@ -1,217 +1,221 @@
 * {
-  margin: 0;
-  padding: 0;
-  box-sizing: border-box;
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
 }
 
 body {
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  min-height: 100vh;
-  background-image: linear-gradient(45deg, #ff0000, white);
-  font-family: 'Arial', sans-serif;
-  transition: background-color 0.4s ease;
+    font-family: 'Montserrat', sans-serif;
+    background: linear-gradient(135deg, #f5f7fa 0%, #c3cfe2 100%);
+    min-height: 100vh;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    color: #333;
+    padding: 20px;
 }
 
 .container {
-  position: relative;
-  width: 550px;
-  height: 550px;
-  border-radius: 50%;
-  overflow: visible;
-  z-index: 100;
+    max-width: 800px;
+    width: 100%;
+    background: rgba(255, 255, 255, 0.9);
+    border-radius: 20px;
+    box-shadow: 0 15px 30px rgba(0, 0, 0, 0.1);
+    overflow: hidden;
+    text-align: center;
+    padding: 40px;
+    position: relative;
 }
 
-.center-circle {
-  position: absolute;
-  top: 50%;
-  left: 50%;
-  transform: translate(-50%, -50%);
-  width: 120px;
-  height: 120px;
-  border-radius: 50%;
-  background-image: url('https://placehold.co/120x120/FF0000/ffffff?text=ICL&font=Raleway');
-  background-size: cover;
-  background-position: center;
-  z-index: 1000;
-  cursor: pointer;
-  transition: transform 0.3s ease;
+h1 {
+    font-family: 'Playfair Display', serif;
+    font-size: 2.5rem;
+    margin-bottom: 20px;
+    color: #4a4a4a;
+    position: relative;
+    display: inline-block;
 }
 
-.center-circle:hover {
-  transform: translate(-50%, -50%) scale(1.1);
+h1:after {
+    content: '';
+    position: absolute;
+    bottom: -10px;
+    left: 50%;
+    transform: translateX(-50%);
+    width: 80px;
+    height: 3px;
+    background: linear-gradient(90deg, #ff9a9e 0%, #fad0c4 100%);
+    border-radius: 3px;
 }
 
-.pizza {
-  position: absolute;
-  top: 0;
-  left: 0;
-  width: 100%;
-  height: 100%;
-  overflow: visible;
+.message-container {
+    margin: 30px 0;
+    perspective: 1000px;
 }
 
-.slice {
-  fill: rgba(255, 255, 255, 0.1);
-  stroke: rgba(255, 255, 255, 0.2);
-  stroke-width: 1;
-  cursor: pointer;
-  transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
-  transform-origin: 250px 250px;
+.message {
+    font-size: 1.8rem;
+    padding: 30px;
+    background: linear-gradient(135deg, #fff6b7 0%, #f6416c 100%);
+    border-radius: 15px;
+    color: white;
+    display: inline-block;
+    margin: 20px 0;
+    transform-style: preserve-3d;
+    transition: transform 0.5s;
+    box-shadow: 0 10px 20px rgba(246, 65, 108, 0.3);
+    position: relative;
+    overflow: hidden;
 }
 
-.slice:hover {
-  transform: scale(1.1);
-  fill: rgba(255, 255, 255, 0.3);
+.message:before {
+    content: '';
+    position: absolute;
+    top: -50%;
+    left: -50%;
+    width: 200%;
+    height: 200%;
+    background: rgba(255, 255, 255, 0.1);
+    transform: rotate(45deg);
+    animation: shine 3s infinite;
 }
 
-.slice-text {
-  fill: white;
-  font-size: 14px;
-  font-weight: bold;
-  text-anchor: middle;
-  dominant-baseline: middle;
-  pointer-events: none;
-  transition: all 0.3s ease;
+@keyframes shine {
+    0% {
+        left: -50%;
+    }
+    100% {
+        left: 150%;
+    }
 }
 
-.slice:hover ~ .slice-text,
-.slice-text:hover {
-  fill: #fff !important;
-  font-size: 16px !important;
+.message:hover {
+    transform: rotateY(10deg) rotateX(5deg);
 }
 
-.slice.active {
-  transform: scale(2.5);
-  fill: rgba(255, 255, 255, 0.95);
-  stroke: #fff;
-  stroke-width: 2;
-  z-index: 1000;
-  filter: drop-shadow(0 0 20px rgba(255, 255, 255, 0.6));
+.flowers {
+    display: flex;
+    justify-content: space-around;
+    margin: 40px 0;
+    flex-wrap: wrap;
 }
 
-.slice.active + .slice-text {
-  fill: #000 !important;
-  font-size: 18px !important;
-  font-weight: bold;
+.flower {
+    width: 80px;
+    height: 80px;
+    position: relative;
+    animation: float 5s ease-in-out infinite;
 }
 
-/* Оверлей */
-.overlay {
-  position: fixed;
-  top: 0;
-  left: 0;
-  width: 100vw;
-  height: 100vh;
-  background: rgba(0, 0, 0, 0.6);
-  z-index: 9999;
-  opacity: 0;
-  visibility: hidden;
-  transition: all 0.4s ease;
+.flower:nth-child(2) {
+    animation-delay: 1s;
 }
 
-.overlay.active {
-  opacity: 1;
-  visibility: visible;
+.flower:nth-child(3) {
+    animation-delay: 2s;
 }
 
-.close-btn {
-  position: fixed;
-  top: 20px;
-  right: 20px;
-  width: 40px;
-  height: 40px;
-  background: rgba(255, 255, 255, 0.9);
-  border-radius: 50%;
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  font-size: 24px;
-  font-weight: bold;
-  cursor: pointer;
-  z-index: 10000;
-  opacity: 0;
-  visibility: hidden;
-  transition: all 0.3s ease;
+.petals {
+    position: absolute;
+    width: 100%;
+    height: 100%;
+    animation: rotate 20s linear infinite;
 }
 
-.close-btn.visible {
-  opacity: 1;
-  visibility: visible;
+.petal {
+    position: absolute;
+    width: 40px;
+    height: 40px;
+    background: #ff9a9e;
+    border-radius: 50% 50% 50% 0;
+    transform-origin: bottom right;
 }
 
-/* Модалка */
-.info-modal {
-  position: fixed;
-  top: 50%;
-  left: 50%;
-  transform: translate(-50%, -50%);
-  width: 400px;
-  max-height: 240px;
-  background: white;
-  border-radius: 12px;
-  padding: 20px;
-  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.3);
-  z-index: 10001;
-  opacity: 0;
-  visibility: hidden;
-  transition: all 0.3s ease;
-  font-size: 14px;
-  line-height: 1.5;
-  overflow-y: auto;
+.petal:nth-child(1) { transform: rotate(0deg); }
+.petal:nth-child(2) { transform: rotate(45deg); }
+.petal:nth-child(3) { transform: rotate(90deg); }
+.petal:nth-child(4) { transform: rotate(135deg); }
+.petal:nth-child(5) { transform: rotate(180deg); }
+.petal:nth-child(6) { transform: rotate(225deg); }
+.petal:nth-child(7) { transform: rotate(270deg); }
+.petal:nth-child(8) { transform: rotate(315deg); }
+
+.center {
+    position: absolute;
+    width: 30px;
+    height: 30px;
+    background: #fff6b7;
+    border-radius: 50%;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
 }
 
-.info-modal.visible {
-  opacity: 1;
-  visibility: visible;
+.btn {
+    background: linear-gradient(135deg, #6a11cb 0%, #2575fc 100%);
+    border: none;
+    border-radius: 50px;
+    padding: 15px 40px;
+    color: white;
+    font-size: 1.2rem;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    box-shadow: 0 10px 20px rgba(37, 117, 252, 0.3);
+    margin-top: 20px;
 }
 
-.info-modal h3 {
-  margin-bottom: 8px;
-  color: #333;
-  font-size: 16px;
+.btn:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 15px 25px rgba(37, 117, 252, 0.4);
 }
 
-.info-modal p {
-  color: #555;
-  white-space: pre-line;
-  margin-bottom: 12px;
+.btn:active {
+    transform: translateY(0);
 }
 
-.go-btn {
-  display: block;
-  width: 100%;
-  padding: 10px;
-  background: #000;
-  color: white;
-  border: none;
-  border-radius: 6px;
-  font-size: 14px;
-  font-weight: bold;
-  cursor: pointer;
-  margin-top: 10px;
+.hidden-message {
+    display: none;
+    margin-top: 30px;
+    padding: 20px;
+    background: #f8f9fa;
+    border-radius: 15px;
+    font-style: italic;
+    color: #6c757d;
+    border-left: 5px solid #6a11cb;
 }
 
-.go-btn:hover {
-  background: #333;
+@keyframes float {
+    0%, 100% {
+        transform: translateY(0);
+    }
+    50% {
+        transform: translateY(-20px);
+    }
 }
 
-@keyframes fadeIn {
-  to {
-    opacity: 1;
-    transform: scale(1);
-  }
+@keyframes rotate {
+    0% {
+        transform: rotate(0deg);
+    }
+    100% {
+        transform: rotate(360deg);
+    }
 }
 
-.container {
-  opacity: 0;
-  transform: scale(0.9);
-  animation: fadeIn 0.6s ease forwards;
-}
-
-.container.active .center-circle {
-  opacity: 0;
-  transform: translate(-50%, -50%) scale(0.8);
-
+@media (max-width: 600px) {
+    h1 {
+        font-size: 2rem;
+    }
+    
+    .message {
+        font-size: 1.5rem;
+        padding: 20px;
+    }
+    
+    .flower {
+        width: 60px;
+        height: 60px;
+        margin: 10px;
+    }
 }
