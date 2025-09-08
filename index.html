@@ -1,101 +1,75 @@
 <!DOCTYPE html>
 <html lang="ru">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Круговая навигация</title>
-  <link rel="stylesheet" href="style.css">
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Цветочное послание</title>
+    <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;700&family=Montserrat:wght@300;400;500&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="style.css">
 </head>
 <body>
+    <div class="container">
+        <h1>Цветочное послание</h1>
+        
+        <p>Иногда нужно выразить чувства прямо и без прикрас...</p>
+        
+        <div class="flowers">
+            <div class="flower">
+                <div class="petals">
+                    <div class="petal"></div>
+                    <div class="petal"></div>
+                    <div class="petal"></div>
+                    <div class="petal"></div>
+                    <div class="petal"></div>
+                    <div class="petal"></div>
+                    <div class="petal"></div>
+                    <div class="petal"></div>
+                </div>
+                <div class="center"></div>
+            </div>
+            
+            <div class="flower">
+                <div class="petals">
+                    <div class="petal"></div>
+                    <div class="petal"></div>
+                    <div class="petal"></div>
+                    <div class="petal"></div>
+                    <div class="petal"></div>
+                    <div class="petal"></div>
+                    <div class="petal"></div>
+                    <div class="petal"></div>
+                </div>
+                <div class="center"></div>
+            </div>
+            
+            <div class="flower">
+                <div class="petals">
+                    <div class="petal"></div>
+                    <div class="petal"></div>
+                    <div class="petal"></div>
+                    <div class="petal"></div>
+                    <div class="petal"></div>
+                    <div class="petal"></div>
+                    <div class="petal"></div>
+                    <div class="petal"></div>
+                </div>
+                <div class="center"></div>
+            </div>
+        </div>
+        
+        <div class="message-container">
+            <div class="message" id="mainMessage">
+                Наведи на меня
+            </div>
+        </div>
+        
+        <button class="btn" id="revealBtn">Раскрыть послание</button>
+        
+        <div class="hidden-message" id="hiddenMessage">
+            Помни, что доброта и уважение делают мир лучше. Используй свои слова мудро.
+        </div>
+    </div>
 
-  <div class="container">
-    <div class="center-circle"></div>
-
-    <svg class="pizza" viewBox="0 0 500 500" xmlns="http://www.w3.org/2000/svg">
-      <!-- GitHub -->
-      <a data-href="https://github.com" target="_blank" class="slice-link">
-        <g class="slice-group">
-          <path d="M250,250 L250,0 A250,250 0 0,1 426.8,73.2 Z" class="slice" 
-                data-info="Первая строка<br>Вторая строка" />
-          <text x="335" y="85" class="slice-text">GitHub</text>
-        </g>
-      </a>
-
-      <!-- LinkedIn -->
-      <a data-href="https://linkedin.com" target="_blank" class="slice-link">
-        <g class="slice-group">
-          <path d="M250,250 L426.8,73.2 A250,250 0 0,1 500,250 Z" class="slice" 
-                data-info="Explore jobs and grow your network\n\nDiscover relevant posts and expert insights.\n\nFind the right job or internship.\n\nPost your job for millions to see.\n\nLearn the skills you need to succeed.\n\nWho is LinkedIn for?\nAnyone looking to navigate their professional life." />
-          <text x="415" y="165" class="slice-text">LinkedIn</text>
-        </g>
-      </a>
-
-      <!-- Twitter/X -->
-      <a data-href="https://twitter.com" target="_blank" class="slice-link">
-        <g class="slice-group">
-          <path d="M250,250 L500,250 A250,250 0 0,1 426.8,426.8 Z" class="slice" 
-                data-info="Something went wrong, but don’t fret — let’s give it another shot.\n\n⚠️ Some privacy related extensions may cause issues on x.com.\nPlease disable them and try again." />
-          <text x="415" y="335" class="slice-text">Twitter</text>
-        </g>
-      </a>
-
-      <!-- Instagram -->
-      <a data-href="https://instagram.com" target="_blank" class="slice-link">
-        <g class="slice-group">
-          <path d="M250,250 L426.8,426.8 A250,250 0 0,1 250,500 Z" class="slice" 
-                data-info="簡介\n新聞中心\n版權\n聯絡我們\n創作者\n刊登廣告\n開發人員\n條款\n私隱\n政策及安全\nYouTube 的運作方式\n測試新功能\n© 2025 Google LLC" />
-          <text x="335" y="415" class="slice-text">Instagram</text>
-        </g>
-      </a>
-
-      <!-- YouTube -->
-      <a data-href="https://youtube.com" target="_blank" class="slice-link">
-        <g class="slice-group">
-          <path d="M250,250 L250,500 A250,250 0 0,1 73.2,426.8 Z" class="slice" 
-                data-info="簡介\n新聞中心\n版權\n聯絡我們\n創作者\n刊登廣告\n開發人員\n條款\n私隱\n政策及安全\nYouTube 的運作方式\n測試新功能\n© 2025 Google LLC" />
-          <text x="165" y="415" class="slice-text">YouTube</text>
-        </g>
-      </a>
-
-      <!-- Dribbble -->
-      <a data-href="https://dribbble.com" target="_blank" class="slice-link">
-        <g class="slice-group">
-          <path d="M250,250 L73.2,426.8 A250,250 0 0,1 0,250 Z" class="slice" 
-                data-info="515.3k shots • 986.2k fans\n12318.8k likes • 6410.7k followers\n20875 teams • 63417.6k views\n843.3k followers • 685.7k likes\n\nDiscover creative work from designers worldwide." />
-          <text x="85" y="335" class="slice-text">Dribbble</text>
-        </g>
-      </a>
-
-      <!-- Behance -->
-      <a data-href="https://behance.net" target="_blank" class="slice-link">
-        <g class="slice-group">
-          <path d="M250,250 L0,250 A250,250 0 0,1 73.2,73.2 Z" class="slice" 
-                data-info="簡介\n新聞中心\n版權\n聯絡我們\n創作者\n刊登廣告\n開發人員\n條款\n私隱\n政策及安全\nYouTube 的運作方式\n測試新功能\n© 2025 Google LLC" />
-          <text x="85" y="165" class="slice-text">Behance</text>
-        </g>
-      </a>
-
-      <!-- Figma -->
-      <a data-href="https://figma.com" target="_blank" class="slice-link">
-        <g class="slice-group">
-          <path d="M250,250 L73.2,73.2 A250,250 0 0,1 250,0 Z" class="slice" 
-                data-info="Explore jobs and grow your network\nBy clicking Continue, you agree to LinkedIn’s User Agreement, Privacy Policy, and Cookie Policy.\n\nNew to LinkedIn? Join now\n\n## Explore top content\nDiscover posts and insights — curated by topic.\n\n## Find the right job or internship\n\n## Post your job for millions to see\n\n## Learn the skills you need to succeed\n\nWho is LinkedIn for? Anyone in their professional life." />
-          <text x="165" y="85" class="slice-text">Figma</text>
-        </g>
-      </a>
-    </svg>
-  </div>
-
-  <!-- Внешние элементы -->
-  <div class="overlay"></div>
-  <div class="close-btn">×</div>
-  <div class="info-modal">
-    <h3 id="modal-title">Название</h3>
-    <p id="modal-text">Описание</p>
-    <button id="modal-go" class="go-btn">Перейти на сайт</button>
-  </div>
-
-  <script src="script.js"></script>
+    <script src="script.js"></script>
 </body>
-
 </html>
